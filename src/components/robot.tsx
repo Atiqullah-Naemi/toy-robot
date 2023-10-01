@@ -1,5 +1,5 @@
 import { useSpring, animated } from "@react-spring/web";
-import { Bot } from "lucide-react";
+import { TrainFront } from "lucide-react";
 import { RobotProps } from "../config/types";
 import { getTranslatePosition } from "../utils";
 
@@ -18,7 +18,7 @@ const Robot: React.FC<RobotProps> = ({ coordinate, isPlaced }) => {
       className="flex items-center justify-center absolute h-28 w-28"
       style={{ ...springs }}
     >
-      <Bot size={80} />
+      <TrainFront size={80} className="text-white" />
     </animated.div>
   );
 };

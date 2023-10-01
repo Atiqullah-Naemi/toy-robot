@@ -5,6 +5,8 @@ import { Square } from "./table-cell";
 import Robot from "./robot";
 import { Coordinate } from "../config/types";
 import { useRobot } from "../zustand/useRobot";
+import { notification } from "./notification";
+import { Toaster } from "react-hot-toast";
 
 const Table = memo(() => {
   const { isPlaced, setIsPlaced } = useRobot();
@@ -62,12 +64,20 @@ const Table = memo(() => {
 
   const setPosition = () => {
     if (typeof x !== "number" || typeof y !== "number") return;
-
+    if (Number(x) >= TABLE_DIMENSION.x || Number(y) >= TABLE_DIMENSION.y) {
+      notification("Please write a number from 0 to 4", "top-center");
+      return;
+    }
     setCoordinates({ x: Number(x), y: Number(y) });
     setIsPlaced(true);
   };
 
   const moveUp = () => {
+    if ((coordinates?.y as number) >= 4) {
+      notification("The robot cannot move in this direction", "top-center");
+      return;
+    }
+
     setCoordinates({
       x: Number(coordinates?.x),
       y: Number(coordinates?.y) + 1,
@@ -75,6 +85,10 @@ const Table = memo(() => {
   };
 
   const moveDown = () => {
+    if ((coordinates?.y as number) <= 0) {
+      notification("The robot cannot move in this direction", "bottom-center");
+      return;
+    }
     setCoordinates({
       x: Number(coordinates?.x),
       y: Number(coordinates?.y) - 1,
@@ -82,6 +96,10 @@ const Table = memo(() => {
   };
 
   const moveLeft = () => {
+    if ((coordinates?.x as number) <= 0) {
+      notification("The robot cannot move in this direction", "bottom-left");
+      return;
+    }
     setCoordinates({
       x: Number(coordinates?.x) - 1,
       y: Number(coordinates?.y),
@@ -89,6 +107,10 @@ const Table = memo(() => {
   };
 
   const moveRight = () => {
+    if ((coordinates?.x as number) >= 4) {
+      notification("The robot cannot move in this direction", "bottom-right");
+      return;
+    }
     setCoordinates({
       x: Number(coordinates?.x) + 1,
       y: Number(coordinates?.y),
@@ -104,7 +126,7 @@ const Table = memo(() => {
         <div className="flex w-full flex-col">
           <div className="flex w-full flex-col relative">
             {rows.map(renderRow)}
-
+            <Toaster containerStyle={{ position: "absolute" }} />
             <Robot coordinate={coordinates} isPlaced={isPlaced} />
           </div>
           <div className="flex w-full">{columns.map(renderCoordinateX)}</div>
@@ -157,8 +179,9 @@ const Table = memo(() => {
         />
 
         <button
-          className="bg-orange-500 rounded-md border-0 shadow-lg text-white p-5 py-1 w-full"
+          className="bg-orange-500 rounded-md border-0 shadow-lg text-white p-5 py-1 w-full disabled:bg-gray-400 disabled:opacity-50"
           onClick={setPosition}
+          disabled={typeof x !== "number" || typeof y !== "number"}
         >
           Set position
         </button>
