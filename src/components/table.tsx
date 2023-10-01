@@ -7,6 +7,8 @@ import { useRobot } from "../zustand/useRobot";
 import { notification } from "./notification";
 import { Toaster } from "react-hot-toast";
 import { useCoordinates } from "../zustand/useCoordinates";
+import ButtonsWrapper from "./buttons-wrapper";
+import { StatusBar } from "./status-bar-";
 
 const Table = memo(() => {
   const { isPlaced, setIsPlaced } = useRobot();
@@ -46,7 +48,7 @@ const Table = memo(() => {
   const renderCoordinateY = (idx: number) => (
     <div
       key={`coordinate-y-${idx}`}
-      className="flex items-center justify-center w-[40px] md:w-[60px] h-[64px] md:h-[100px]"
+      className="flex items-center justify-center w-[40px] md:w-[60px] h-[64px] md:h-[110px]"
     >
       <p className="font-semibold text-neutral-500 align-middle">
         {TABLE_DIMENSION.y - 1 - idx}
@@ -72,53 +74,9 @@ const Table = memo(() => {
     setIsPlaced(true);
   };
 
-  const moveUp = () => {
-    if ((coordinates?.y as number) >= 4) {
-      notification("The robot cannot move in this direction", "top-center");
-      return;
-    }
-
-    setCoordinates({
-      x: Number(coordinates?.x),
-      y: Number(coordinates?.y) + 1,
-    });
-  };
-
-  const moveDown = () => {
-    if ((coordinates?.y as number) <= 0) {
-      notification("The robot cannot move in this direction", "bottom-center");
-      return;
-    }
-    setCoordinates({
-      x: Number(coordinates?.x),
-      y: Number(coordinates?.y) - 1,
-    });
-  };
-
-  const moveLeft = () => {
-    if ((coordinates?.x as number) <= 0) {
-      notification("The robot cannot move in this direction", "bottom-left");
-      return;
-    }
-    setCoordinates({
-      x: Number(coordinates?.x) - 1,
-      y: Number(coordinates?.y),
-    });
-  };
-
-  const moveRight = () => {
-    if ((coordinates?.x as number) >= 4) {
-      notification("The robot cannot move in this direction", "bottom-right");
-      return;
-    }
-    setCoordinates({
-      x: Number(coordinates?.x) + 1,
-      y: Number(coordinates?.y),
-    });
-  };
-
   return (
     <div className="flex flex-col gap-5">
+      <StatusBar />
       <div className="flex w-full">
         <div className="flex flex-col w-[60px]">
           <div className="flex flex-col">{rows.map(renderCoordinateY)}</div>
@@ -133,34 +91,7 @@ const Table = memo(() => {
         </div>
       </div>
 
-      <div className="w-full flex justify-between gap-5">
-        <button
-          className="bg-orange-500 rounded-md border-0 shadow-lg text-white p-5 py-1 w-full"
-          onClick={moveUp}
-        >
-          Up
-        </button>
-
-        <button
-          className="bg-orange-500 rounded-md border-0 shadow-lg text-white p-5 py-1 w-full"
-          onClick={moveDown}
-        >
-          Down
-        </button>
-        <button
-          className="bg-orange-500 rounded-md border-0 shadow-lg text-white p-5 py-1 w-full"
-          onClick={moveRight}
-        >
-          Right
-        </button>
-
-        <button
-          className="bg-orange-500 rounded-md border-0 shadow-lg text-white p-5 py-1 w-full"
-          onClick={moveLeft}
-        >
-          Left
-        </button>
-      </div>
+      <ButtonsWrapper />
 
       <div className="w-full flex flex-col md:flex-row justify-between gap-5">
         <input
