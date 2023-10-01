@@ -1,7 +1,11 @@
+import Table from "./components/table";
+
 function App() {
   return (
     <>
-      <h1 className="text-rose-500">heading</h1>
+      <div className="flex flex-col w-full max-w-2xl mx-auto p-5">
+        <Table />
+      </div>
     </>
   );
 }
