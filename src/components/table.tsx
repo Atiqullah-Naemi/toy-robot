@@ -3,22 +3,22 @@ import { arrayFromInteger } from "../utils";
 import { TABLE_DIMENSION } from "../config/constants";
 import { Square } from "./table-cell";
 import Robot from "./robot";
-import { Coordinate } from "../config/types";
 import { useRobot } from "../zustand/useRobot";
 import { notification } from "./notification";
 import { Toaster } from "react-hot-toast";
+import { useCoordinates } from "../zustand/useCoordinates";
 
 const Table = memo(() => {
   const { isPlaced, setIsPlaced } = useRobot();
+  const { coordinates, setCoordinates } = useCoordinates();
   const rows = arrayFromInteger(TABLE_DIMENSION.y);
   const columns = arrayFromInteger(TABLE_DIMENSION.x);
-  const [coordinates, setCoordinates] = useState<Coordinate>(null);
   const [x, setX] = useState<number | string>("");
   const [y, setY] = useState<number | string>("");
 
   const renderRow = useCallback(
     (rowIndex: number) => (
-      <div key={`row-${rowIndex}`} className="flex w-full h-28">
+      <div key={`row-${rowIndex}`} className="flex w-full h-16 md:h-28">
         {columns.map((squareIndex: number) => (
           <Square
             key={`square-${squareIndex}`}
@@ -46,7 +46,7 @@ const Table = memo(() => {
   const renderCoordinateY = (idx: number) => (
     <div
       key={`coordinate-y-${idx}`}
-      className="flex items-center justify-center w-[60px] h-[100px]"
+      className="flex items-center justify-center w-[40px] md:w-[60px] h-[64px] md:h-[100px]"
     >
       <p className="font-semibold text-neutral-500 align-middle">
         {TABLE_DIMENSION.y - 1 - idx}
@@ -162,7 +162,7 @@ const Table = memo(() => {
         </button>
       </div>
 
-      <div className="w-full flex justify-between gap-5">
+      <div className="w-full flex flex-col md:flex-row justify-between gap-5">
         <input
           type="text"
           className="w-full p-2 rounded-md border border-neutral-500"

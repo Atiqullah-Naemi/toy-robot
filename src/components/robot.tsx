@@ -15,10 +15,10 @@ const Robot: React.FC<RobotProps> = ({ coordinate, isPlaced }) => {
 
   return (
     <animated.div
-      className="flex items-center justify-center absolute h-28 w-28"
+      className="flex items-center justify-center absolute  h-16 md:h-28 w-16 md:w-28 ml-[-10px] md:ml-0"
       style={{ ...springs }}
     >
-      <TrainFront size={80} className="text-white" />
+      <TrainFront className="text-white h-10 w-10" />
     </animated.div>
   );
 };
